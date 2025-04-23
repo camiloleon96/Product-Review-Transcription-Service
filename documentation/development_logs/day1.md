@@ -84,10 +84,12 @@ goal: have a docker-compose with all the services + some simple code to ensure e
 
 dtk -> development task number( this naming convetion will be useful for the branches)
 
-- dtk01 (10 min): set up the fastApi app with simple endpoint
+- dtk01 (10 min): set up the fastApi app with simple endpoint ✅
   - use the uv documentation as a guide
-- dtk02 (15 min): run the fastApi inside a container
-- dtk03 (1 hr ): set up the postgress db with pgadmin
+- dtk02 (15 min): run the fastApi inside a container ✅
+- dtk03 (1 hr ): set up the postgress db + pgadmin
+  - create docker-compose with the db and include the docker file of the fastApi app
+  - create basic models for the tables
   - ensure the fast api app can reach the db
 - dtk04 (10 min): setup the broker
 - dtk05 (30 min): set up the worker + celery
