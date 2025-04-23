@@ -87,10 +87,17 @@ dtk -> development task number( this naming convetion will be useful for the bra
 - dtk01 (10 min): set up the fastApi app with simple endpoint ✅
   - use the uv documentation as a guide
 - dtk02 (15 min): run the fastApi inside a container ✅
-- dtk03 (1 hr ): set up the postgress db + pgadmin
-  - create docker-compose with the db and include the docker file of the fastApi app
-  - create basic models for the tables
-  - ensure the fast api app can reach the db
-- dtk04 (10 min): setup the broker
-- dtk05 (30 min): set up the worker + celery
+- dtk03 (1 hr ): set up the postgress db + pgadmin ✅
+  - create docker-compose with the db and include the docker file of the fastApi app ✅
+  - create basic models for the tables ✅
+  - ensure the fast api app can reach the db ✅
+
+Notes:
+
+1. I encountered some issues with the timing between FastAPI and the database initialization. I resolved these by adding a health check in the Docker Compose configuration.
+
+2. Designing the database structure took longer than expected (+ 1 hr) due to additional considerations. As a result, I need to re-estimate the tasks related to the broker and consumers, which I will move to tomorrow.
+
+- dtk04 (20 min): setup the broker
+- dtk05 (1 hr min): set up the worker + celery
   - make sure it consumes the events
