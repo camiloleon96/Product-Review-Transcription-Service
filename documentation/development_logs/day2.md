@@ -39,3 +39,4 @@ Now, the focus will be on the development of the api and update the db design an
 assumption: for the following mvp, one video will contain the review of only one product, however the db will be compatible to handle:
 One video -> many products
 one product -> many videos
+The video_products table is a junction table, because the score is given by each video
