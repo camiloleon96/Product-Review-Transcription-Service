@@ -98,6 +98,6 @@ Notes:
 
 2. Designing the database structure took longer than expected (+ 1 hr) due to additional considerations. As a result, I need to re-estimate the tasks related to the broker and consumers, which I will move to tomorrow.
 
-- dtk04 (20 min): setup the broker
-- dtk05 (1 hr min): set up the worker + celery
-  - make sure it consumes the events
+- dtk04 (20 min): setup the broker ✅
+- dtk05 (1 hr min): set up the worker + celery ✅
+  - make sure it consumes the events ✅
