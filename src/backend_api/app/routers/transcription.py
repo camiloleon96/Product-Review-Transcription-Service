@@ -1,31 +1,25 @@
 from fastapi import APIRouter
+from typing import Annotated
+from sqlalchemy.orm import Session
 from pydantic import BaseModel, HttpUrl
 from uuid import uuid4
 from app.trascription_worker_client import celery_app
+from fastapi import Depends
+from ..database import get_db
+from app.schemas.video_schemas import (
+    TranscribeRequest,
+    TranscribeResponse,
+    TranscriptionResponse,
+)
 
 router = APIRouter()
 
-# TODO: move this to a separate file
+db_dependency = Annotated[Session, Depends(get_db)]
 
-class TranscribeRequest(BaseModel):
-    url: HttpUrl
-
-class TranscribeResponse(BaseModel):
-    video_id: str
-    status: str
-    message: str
-
-class Segment(BaseModel):
-    start_time: float
-    end_time: float
-    text: str
-
-class TranscriptionResponse(BaseModel):
-    video_id: str
-    title: str
-    url: HttpUrl
-    status: str
-    transcription: str
+router = APIRouter(
+    prefix='/video',
+    tags=['video']
+)
 
 
 @router.post("/transcribe", response_model=TranscribeResponse, status_code=202)
@@ -33,8 +27,8 @@ async def transcribe(request: TranscribeRequest):
     video_id = str(uuid4())
     
     print(f"[DB] Insert video: id={video_id}, url={request.url}, status='pending'")
+    
     print(f"[QUEUE] Enqueued transcription task for video_id={video_id}")
-
     celery_app.send_task("celery_worker.transcribe_video", args=[video_id, str(request.url)])
 
     return TranscribeResponse(
