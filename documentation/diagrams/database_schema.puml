@@ -1,0 +1,53 @@
+@startuml
+!theme minty
+
+!define UUID String
+!define TIMESTAMP String
+
+entity "videos" as videos {
+    * id : UUID <<PK>>
+    --
+    url : Text
+    title : String(255)
+    uploaded_at : TIMESTAMP
+    created_at : TIMESTAMP
+    language : String(10)
+    transcription_status : Enum(TranscriptionStatus)
+}
+
+entity "transcriptions" as transcriptions {
+    * id : UUID <<PK>>
+    --
+    video_id : UUID <<FK>>
+    transcribed_text : Text
+    created_at : TIMESTAMP
+}
+
+entity "products" as products {
+    * id : UUID <<PK>>
+    --
+    product_name : Text
+    brand_name : Text
+    category : Text
+    created_at : TIMESTAMP
+}
+
+entity "video_products" as video_products {
+    * id : UUID <<PK>>
+    --
+    video_id : UUID <<FK>>
+    product_id : UUID <<FK>>
+    score : Integer [1-10]
+    created_at : TIMESTAMP
+}
+
+' Relationships
+videos ||--o{ transcriptions : has
+videos ||--o{ video_products : includes
+products ||--o{ video_products : contains
+transcriptions ||--|| videos : "for"
+video_products }o--|| products : "references"
+video_products }o--|| videos : "references"
+
+@enduml
+

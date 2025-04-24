@@ -1,6 +1,6 @@
 
 from .database import Base
-from sqlalchemy import Column, ForeignKey, Text, String, TIMESTAMP, Enum, text, UniqueConstraint
+from sqlalchemy import Column, ForeignKey, Text, String, TIMESTAMP, Enum, text, Integer, CheckConstraint
 from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
 import uuid
 from sqlalchemy.orm import relationship
@@ -37,3 +37,32 @@ class Transcription(Base):
     #search_vector = Column(TSVECTOR)
 
     video = relationship("Video", back_populates="transcription")
+    video_products = relationship("VideoProduct", back_populates="video")
+
+class Product(Base):
+    __tablename__ = 'products'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    product_name = Column(String(100))
+    brand_name = Column(String(100))
+    category = Column(String(100))
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
+
+    video_products = relationship("VideoProduct", back_populates="product")
+
+
+class VideoProduct(Base):
+    __tablename__ = 'video_products'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    video_id = Column(UUID(as_uuid=True), ForeignKey('videos.id'))
+    product_id = Column(UUID(as_uuid=True), ForeignKey('products.id'))
+    score = Column(Integer) #from 1 to 10
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
+
+    video = relationship("Video", back_populates="video_products")
+    product = relationship("Product", back_populates="video_products")
+
+    __table_args__ = (
+        CheckConstraint('score >= 1 AND score <= 10', name='score_range'),
+    )
