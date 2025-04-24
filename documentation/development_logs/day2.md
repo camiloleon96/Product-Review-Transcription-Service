@@ -33,3 +33,9 @@ Now, the focus will be on the development of the api and update the db design an
   - while working in this I can refactor some other things that are pending for example refactor the schemas
   - write unit tests
 - documentation: write about the things that can be improved
+
+## hotfix dbmodels
+
+assumption: for the following mvp, one video will contain the review of only one product, however the db will be compatible to handle:
+One video -> many products
+one product -> many videos
