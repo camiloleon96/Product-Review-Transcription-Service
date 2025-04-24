@@ -5,8 +5,8 @@ from pydantic import BaseModel, HttpUrl
 from uuid import uuid4
 from app.trascription_worker_client import celery_app
 from fastapi import Depends
-from ..database import get_db
-from app.schemas.video_schemas import (
+from ..database.database import get_db
+from app.schemas.transcription_schemas import (
     TranscribeRequest,
     TranscribeResponse,
     TranscriptionResponse,
@@ -27,7 +27,7 @@ async def transcribe(request: TranscribeRequest):
     video_id = str(uuid4())
     
     print(f"[DB] Insert video: id={video_id}, url={request.url}, status='pending'")
-    
+
     print(f"[QUEUE] Enqueued transcription task for video_id={video_id}")
     celery_app.send_task("celery_worker.transcribe_video", args=[video_id, str(request.url)])
 

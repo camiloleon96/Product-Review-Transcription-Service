@@ -1,5 +1,5 @@
 
-from .database import Base
+from ..database.database import Base
 from sqlalchemy import Column, ForeignKey, Text, String, TIMESTAMP, Enum, text, Integer, CheckConstraint
 from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
 import uuid
