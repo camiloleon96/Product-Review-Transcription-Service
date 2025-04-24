@@ -1,4 +1,3 @@
-from typing import Union
 from fastapi import FastAPI
 from .models import models
 from .database.database import engine

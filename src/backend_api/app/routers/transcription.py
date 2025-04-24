@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from typing import Annotated
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, HttpUrl
 from uuid import uuid4
 from app.trascription_worker_client import celery_app
 from fastapi import Depends

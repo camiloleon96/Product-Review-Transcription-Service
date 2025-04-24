@@ -1,7 +1,7 @@
 
 from ..database.database import Base
 from sqlalchemy import Column, ForeignKey, Text, String, TIMESTAMP, Enum, text, Integer, CheckConstraint
-from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
+from sqlalchemy.dialects.postgresql import UUID #TSVECTOR
 import uuid
 from sqlalchemy.orm import relationship
 import enum
