@@ -13,4 +13,5 @@ class TranscriptionResponse(BaseModel):
     title: str
     url: HttpUrl
     status: str
+    language: str
     transcription: str

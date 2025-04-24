@@ -6,7 +6,7 @@ from uuid import uuid4
 from app.trascription_worker_client import celery_app
 from fastapi import Depends
 from ..database.database import get_db
-from app.models.models import Video, TranscriptionStatus
+from app.models.models import Video, Transcription, TranscriptionStatus
 from app.schemas.transcription_schemas import (
     TranscribeRequest,
     TranscribeResponse,
@@ -68,14 +68,59 @@ async def transcribe(request: TranscribeRequest, db: db_dependency):
     )
 
 
-@router.get("/transcription/{video_id}", response_model=TranscriptionResponse)
-async def get_transcription(video_id: str):
-    print(f"[DB] Fetch transcription for video_id={video_id}")
+def fetch_video_and_transcription(db: Session, video_id: str):
+    """
+    Fetch video and transcription data for a given video_id.
+    """
+    result = db.query(
+        Video.id.label("video_id"),
+        Video.title,
+        Video.url,
+        Video.language,
+        Video.transcription_status,
+        Video.uploaded_at,
+        Transcription.transcribed_text,
+        Transcription.created_at.label("transcription_created_at")
+    ).outerjoin(
+        Transcription, Video.id == Transcription.video_id
+    ).filter(
+        Video.id == video_id
+    ).first()
 
-    return TranscriptionResponse(
-        video_id=video_id,
-        title="Mocked Product Review Video",
-        url="https://youtube.com/watch?v=mock123",
-        status="transcribed",
-        transcription="this is a mocked transcription bla, bla, bla..."
-    )
+    if not result:
+        return None
+
+    return {
+        "video_id": result.video_id,
+        "title": result.title,
+        "url": str(result.url),
+        "language": result.language,
+        "transcription_status": result.transcription_status,
+        "uploaded_at": result.uploaded_at,
+        "transcribed_text": result.transcribed_text,
+        "transcription_created_at": result.transcription_created_at,
+    }
+@router.get("/transcription/{video_id}", response_model=TranscriptionResponse)
+async def get_transcription(video_id: str, db: db_dependency):
+    try:
+        print(f"[DB] Fetch transcription for video_id={video_id}")
+        transcription = fetch_video_and_transcription(db, video_id)
+        if not transcription:
+            raise HTTPException(status_code=404, detail="Video not found")
+        return TranscriptionResponse(
+            video_id=video_id,
+            title=transcription["title"],
+            url=transcription["url"],
+            status=transcription["transcription_status"],
+            language=transcription["language"],
+            transcription=transcription["transcribed_text"],
+        )
+    except HTTPException as e:
+        print(f"[ERROR] HTTP exception: {e.detail}")
+        raise e
+    except SQLAlchemyError as e:
+        print(f"[ERROR] Database error: {e}")
+        raise HTTPException(status_code=500, error="Database error while fetching transcription")
+    except Exception as e:
+        print(f"[ERROR] Unexpected error: {e}")
+        raise HTTPException(status_code=500, error="Unexpected error while fetching transcription")
