@@ -22,14 +22,17 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
 
-def insert_video(session, video_id: str, youtube_url: str):
-    insert_video_sql = text("""
-        INSERT INTO videos (id, url, title, language, transcription_status)
-        VALUES (:id, :url, :title, :language, :transcription_status)
+def update_video_metadata(session, video_id: str):
+    update_video_sql = text("""
+        UPDATE videos
+        SET title = :title,
+            language = :language,
+            transcription_status = :transcription_status
+        WHERE id = :id
     """)
-    session.execute(insert_video_sql, {
+
+    session.execute(update_video_sql, {
         "id": video_id,
-        "url": youtube_url,
         "title": "Mock Video Title",
         "language": "en",
         "transcription_status": "pending"
@@ -95,7 +98,7 @@ def transcribe_video(video_id: str, youtube_url: str):
     print(f"[Worker] Transcribing: {youtube_url} (video_id={video_id})")
     session = SessionLocal()
     try:
-        insert_video(session, video_id, youtube_url)
+        update_video_metadata(session, video_id)
 
         time.sleep(5)  # simulate processing
 

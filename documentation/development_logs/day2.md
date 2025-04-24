@@ -28,7 +28,7 @@ while developing this I realized there is something missing in the db desing: th
 
 Now, the focus will be on the development of the api and update the db design and document everything.
 
-- hotfix: db models to include product data
+- hotfix: db models to include product data ✅
 - dtk06 (2 hr): implement the GET transcriptions endpoint
   - while working in this I can refactor some other things that are pending for example refactor the schemas
   - write unit tests
@@ -40,3 +40,5 @@ assumption: for the following mvp, one video will contain the review of only one
 One video -> many products
 one product -> many videos
 The video_products table is a junction table, because the score is given by each video
+
+## dtk06 (2 hr)

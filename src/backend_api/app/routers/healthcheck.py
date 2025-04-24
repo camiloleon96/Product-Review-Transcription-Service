@@ -3,7 +3,7 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from fastapi import Depends
-from ..database import get_db
+from ..database.database import get_db
 
 router = APIRouter(
     prefix='/healthcheck',

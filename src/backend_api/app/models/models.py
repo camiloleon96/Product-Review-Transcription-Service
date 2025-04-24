@@ -1,7 +1,7 @@
 
-from .database import Base
+from ..database.database import Base
 from sqlalchemy import Column, ForeignKey, Text, String, TIMESTAMP, Enum, text, Integer, CheckConstraint
-from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
+from sqlalchemy.dialects.postgresql import UUID #TSVECTOR
 import uuid
 from sqlalchemy.orm import relationship
 import enum
@@ -17,15 +17,14 @@ class Video(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     url = Column(Text, nullable=False)
-    title = Column(String(255), nullable=False)
+    title = Column(String(255), nullable=True)
     uploaded_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
     created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
     language = Column(String(10))
     transcription_status = Column(Enum(TranscriptionStatus), default=TranscriptionStatus.pending)
-    
-    # Relationships
-    transcription = relationship("Transcription", back_populates="video", uselist=False, cascade="all, delete-orphan")
 
+    transcription = relationship("Transcription", back_populates="video", uselist=False, cascade="all, delete-orphan")
+    video_products = relationship("VideoProduct", back_populates="video")
 
 class Transcription(Base):
     __tablename__ = 'transcriptions'
@@ -37,7 +36,6 @@ class Transcription(Base):
     #search_vector = Column(TSVECTOR)
 
     video = relationship("Video", back_populates="transcription")
-    video_products = relationship("VideoProduct", back_populates="video")
 
 class Product(Base):
     __tablename__ = 'products'
