@@ -1,0 +1,26 @@
+@startuml
+!theme mars
+actor Client
+participant "Backend API" as API
+participant "Broker" as Broker
+participant "Worker (Transcriber)" as Worker
+database "Database" as DB
+
+== Request Phase ==
+Client -> API : POST /transcribe (YouTube URL)
+API -> DB : Insert video record (status: 'pending')
+API -> Broker : Enqueue transcription job
+API --> Client : 202 Accepted + video_id
+
+== Processing Phase ==
+Broker -> Worker : Deliver queued task
+Worker -> YouTube : Fetch video metadata \n and Download audio (Mocked)
+Worker -> Worker : Transcribe audio (Mocked)
+Worker -> DB : Update transcription text \n Update video status = 'transcribed'
+
+
+== Retrieval Phase ==
+Client -> API : GET /transcription/{video_id}
+API -> DB : Query transcription data
+API --> Client : 200 OK + transcription + metadata
+@enduml
