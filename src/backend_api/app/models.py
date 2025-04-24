@@ -43,9 +43,9 @@ class Product(Base):
     __tablename__ = 'products'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_name = Column(Text)
-    brand_name = Column(Text)
-    category = Column(Text)
+    product_name = Column(String(100))
+    brand_name = Column(String(100))
+    category = Column(String(100))
     created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
 
     video_products = relationship("VideoProduct", back_populates="product")

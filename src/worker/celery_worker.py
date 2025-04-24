@@ -6,6 +6,7 @@ from celery import Celery
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+import random
 
 # Load environment variables
 load_dotenv()
@@ -35,6 +36,35 @@ def insert_video(session, video_id: str, youtube_url: str):
     })
     session.commit()
 
+
+def insert_product(session) -> str:
+    product_id = str(uuid.uuid4())
+    sql = text("""
+        INSERT INTO products (id, product_name, brand_name, category)
+        VALUES (:id, :product_name, :brand_name, :category)
+    """)
+    session.execute(sql, {
+        "id": product_id,
+        "product_name": "Mock Product",
+        "brand_name": "Mock Brand",
+        "category": "Mock Category"
+    })
+    session.commit()
+    return product_id
+
+
+def insert_video_product(session, video_id: str, product_id: str):
+    sql = text("""
+        INSERT INTO video_products (id, video_id, product_id, score)
+        VALUES (:id, :video_id, :product_id, :score)
+    """)
+    session.execute(sql, {
+        "id": str(uuid.uuid4()),
+        "video_id": video_id,
+        "product_id": product_id,
+        "score": random.randint(1, 10)
+    })
+    session.commit()
 
 def insert_transcription(session, video_id: str):
     insert_transcription_sql = text("""
@@ -70,6 +100,10 @@ def transcribe_video(video_id: str, youtube_url: str):
         time.sleep(5)  # simulate processing
 
         insert_transcription(session, video_id)
+
+        product_id = insert_product(session)
+        insert_video_product(session, video_id, product_id)
+
         update_video_status(session, video_id, "completed")
 
         print(f"[Worker] Done: {video_id}")
