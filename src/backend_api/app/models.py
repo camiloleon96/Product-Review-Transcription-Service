@@ -8,7 +8,7 @@ import enum
 
 class TranscriptionStatus(enum.Enum):
     pending = 'pending'
-    transcribed = 'transcribed'
+    completed = 'completed'
     error = 'error'
 
 
@@ -16,12 +16,12 @@ class Video(Base):
     __tablename__ = 'videos'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    youtube_url = Column(Text, nullable=False)
+    url = Column(Text, nullable=False)
     title = Column(String(255), nullable=False)
     uploaded_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
     created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
     language = Column(String(10))
-    status = Column(Enum(TranscriptionStatus), default=TranscriptionStatus.pending)
+    transcription_status = Column(Enum(TranscriptionStatus), default=TranscriptionStatus.pending)
     
     # Relationships
     transcription = relationship("Transcription", back_populates="video", uselist=False, cascade="all, delete-orphan")
