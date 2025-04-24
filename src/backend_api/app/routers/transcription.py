@@ -26,20 +26,26 @@ router = APIRouter(
 
 @router.post("/transcribe", response_model=TranscribeResponse, status_code=202)
 async def transcribe(request: TranscribeRequest, db: db_dependency):
-    video_url = str(request.url)
-    video_id = str(uuid4())
+    try:
+        video_url = str(request.url)
+        video_id = str(uuid4())
 
-    print(f"[DB] Insert video: id={video_id}, url={video_url}, status='pending'")
+        print(f"[DB] Insert video: id={video_id}, url={video_url}, status='pending'")
 
-    add_video_record(db, video_id, video_url)
-    enqueue_transcription_task(celery_app, video_id, video_url)
+        add_video_record(db, video_id, video_url)
+        enqueue_transcription_task(celery_app, video_id, video_url)
 
-    return TranscribeResponse(
-        video_id=video_id,
-        status="pending",
-        message="Transcription in progress. Use GET /transcription/{video_id} to check status."
-    )
-
+        return TranscribeResponse(
+            video_id=video_id,
+            status="pending",
+            message="Transcription in progress. Use GET /transcription/{video_id} to check status."
+        )
+    except SQLAlchemyError as e:
+        print(f"[ERROR] Database error: {e}")
+        raise HTTPException(status_code=500, detail="Database error while processing transcription")
+    except Exception as e:
+        print(f"[ERROR] Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="Unexpected error while processing transcription")
 
 
 @router.get("/transcription/{video_id}", response_model=TranscriptionResponse)
@@ -57,12 +63,9 @@ async def get_transcription(video_id: str, db: db_dependency):
             language=transcription["language"],
             transcription=transcription["transcribed_text"],
         )
-    except HTTPException as e:
-        print(f"[ERROR] HTTP exception: {e.detail}")
-        raise e
     except SQLAlchemyError as e:
         print(f"[ERROR] Database error: {e}")
-        raise HTTPException(status_code=500, error="Database error while fetching transcription")
+        raise HTTPException(status_code=500, detail="Database error while fetching transcription")
     except Exception as e:
         print(f"[ERROR] Unexpected error: {e}")
-        raise HTTPException(status_code=500, error="Unexpected error while fetching transcription")
+        raise HTTPException(status_code=500, detail="Unexpected error while fetching transcription")
