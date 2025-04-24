@@ -1,53 +1,46 @@
 @startuml
-!theme minty
+hide circle
+skinparam classAttributeIconSize 0
 
-!define UUID String
-!define TIMESTAMP String
-
-entity "videos" as videos {
-    * id : UUID <<PK>>
-    --
-    url : Text
-    title : String(255)
-    uploaded_at : TIMESTAMP
-    created_at : TIMESTAMP
-    language : String(10)
-    transcription_status : Enum(TranscriptionStatus)
+entity "videos" {
+  + id : UUID (PK)
+  --
+  url : Text (NOT NULL)
+  title : String(255)
+  uploaded_at : TIMESTAMP (default=now())
+  created_at : TIMESTAMP (default=now())
+  language : String(10)
+  transcription_status : Enum(TranscriptionStatus) (default=pending)
 }
 
-entity "transcriptions" as transcriptions {
-    * id : UUID <<PK>>
-    --
-    video_id : UUID <<FK>>
-    transcribed_text : Text
-    created_at : TIMESTAMP
+entity "transcriptions" {
+  + id : UUID (PK)
+  --
+  video_id : UUID (FK to videos.id, UNIQUE, NOT NULL)
+  transcribed_text : Text
+  created_at : TIMESTAMP (default=now())
 }
 
-entity "products" as products {
-    * id : UUID <<PK>>
-    --
-    product_name : Text
-    brand_name : Text
-    category : Text
-    created_at : TIMESTAMP
+entity "products" {
+  + id : UUID (PK)
+  --
+  product_name : String(100)
+  brand_name : String(100)
+  category : String(100)
+  created_at : TIMESTAMP (default=now())
 }
 
-entity "video_products" as video_products {
-    * id : UUID <<PK>>
-    --
-    video_id : UUID <<FK>>
-    product_id : UUID <<FK>>
-    score : Integer [1-10]
-    created_at : TIMESTAMP
+entity "video_products" {
+  + id : UUID (PK)
+  --
+  video_id : UUID (FK to videos.id)
+  product_id : UUID (FK to products.id)
+  score : Integer (CHECK 1 <= score <= 10)
+  created_at : TIMESTAMP (default=now())
 }
 
 ' Relationships
-videos ||--o{ transcriptions : has
-videos ||--o{ video_products : includes
-products ||--o{ video_products : contains
-transcriptions ||--|| videos : "for"
-video_products }o--|| products : "references"
-video_products }o--|| videos : "references"
-
+"videos" ||--o{ "transcriptions" : has
+"videos" ||--o{ "video_products" : includes
+"products" ||--o{ "video_products" : appears_in
 @enduml
-

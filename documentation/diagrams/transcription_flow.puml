@@ -16,7 +16,7 @@ API --> Client : 202 Accepted + video_id
 Broker -> Worker : Deliver queued task
 Worker -> YouTube : Fetch video metadata \n and Download audio (Mocked)
 Worker -> Worker : Transcribe audio (Mocked)
-Worker -> DB : Update transcription text \n Update video status = 'transcribed'
+Worker -> DB : Update transcription text \n Update video status = 'completed'
 
 
 == Retrieval Phase ==

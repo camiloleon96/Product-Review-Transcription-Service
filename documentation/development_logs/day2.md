@@ -11,7 +11,7 @@ The focus of this day will be to develop the backend, the worker, and design the
 - work in the documentation
 - finish setting up the docker compose
 - have the worker mocking the transcriptions (dtk05 ✅ )
-- have a first version of the endpoint ready (dtk06)
+- have a first version of the endpoint ready (dtk06 ✅ )
 
 ## dtk04 (20 min): setup the broker
 
@@ -24,21 +24,21 @@ The focus of this day will be to develop the backend, the worker, and design the
 
 while developing this I realized there is something missing in the db desing: the product data
 
-## Create more development tasks
+## Create more development tasks ✅
 
 Now, the focus will be on the development of the api and update the db design and document everything.
 
 - hotfix: db models to include product data ✅
-- dtk06 (2 hr): implement the GET transcriptions endpoint
+- dtk06 (2 hr): implement the GET transcriptions endpoint✅
   - while working in this I can refactor some other things that are pending for example refactor the schemas
-  - write unit tests
+  - write unit tests ✅(implemented some basic ones, needed more time to figure out an issue with the db mock, but for a mvp is ok I think)
 - documentation: write about the things that can be improved
 
-## hotfix dbmodels
+## hotfix dbmodels ✅
 
 assumption: for the following mvp, one video will contain the review of only one product, however the db will be compatible to handle:
 One video -> many products
 one product -> many videos
 The video_products table is a junction table, because the score is given by each video
 
-## dtk06 (2 hr)
+## dtk06 (3 hr) ✅

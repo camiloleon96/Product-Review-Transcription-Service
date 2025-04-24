@@ -17,3 +17,11 @@ Run the Docker container locally with:
 ```
 docker run -p 8000:80 fastapi-app
 ```
+
+# docker compose commands
+
+```
+docker-compose -f docker-compose.yaml build
+docker-compose -f docker-compose.yaml up -d
+docker-compose -f docker-compose.yaml down
+```
