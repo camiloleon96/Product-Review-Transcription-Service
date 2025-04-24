@@ -24,7 +24,7 @@ router = APIRouter(
 @router.post("/transcribe", response_model=TranscribeResponse, status_code=202)
 async def transcribe(request: TranscribeRequest):
     video_id = str(uuid4())
-    
+
     print(f"[DB] Insert video: id={video_id}, url={request.url}, status='pending'")
 
     print(f"[QUEUE] Enqueued transcription task for video_id={video_id}")
@@ -39,7 +39,7 @@ async def transcribe(request: TranscribeRequest):
 @router.get("/transcription/{video_id}", response_model=TranscriptionResponse)
 async def get_transcription(video_id: str):
     print(f"[DB] Fetch transcription for video_id={video_id}")
-    
+
     return TranscriptionResponse(
         video_id=video_id,
         title="Mocked Product Review Video",

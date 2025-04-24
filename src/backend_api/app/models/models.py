@@ -22,7 +22,7 @@ class Video(Base):
     created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
     language = Column(String(10))
     transcription_status = Column(Enum(TranscriptionStatus), default=TranscriptionStatus.pending)
-    
+
     # Relationships
     transcription = relationship("Transcription", back_populates="video", uselist=False, cascade="all, delete-orphan")
 

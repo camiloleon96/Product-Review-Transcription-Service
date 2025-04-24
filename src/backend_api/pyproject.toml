@@ -13,3 +13,7 @@ dependencies = [
     "ruff>=0.11.6",
     "sqlalchemy>=2.0.40",
 ]
+[tool.ruff]
+line-length = 88
+select = ["E", "W", "F"]
+ignore = ["E501"]
