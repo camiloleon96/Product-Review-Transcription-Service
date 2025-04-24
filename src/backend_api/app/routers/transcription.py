@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, HttpUrl
 from uuid import uuid4
+from app.trascription_worker_client import celery_app
 
 router = APIRouter()
 
@@ -33,6 +34,8 @@ async def transcribe(request: TranscribeRequest):
     
     print(f"[DB] Insert video: id={video_id}, url={request.url}, status='pending'")
     print(f"[QUEUE] Enqueued transcription task for video_id={video_id}")
+
+    celery_app.send_task("celery_worker.transcribe_video", args=[video_id, str(request.url)])
 
     return TranscribeResponse(
         video_id=video_id,
