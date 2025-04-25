@@ -13,6 +13,8 @@ As a result of this initial phase, I created a clear set of tasks and main goals
 - dtk04: Setup Redis broker
 - dtk05: Setup Celery worker (mock transcription)
 
+dtk = _development task_, intended for naming the branches
+
 ### Day 2 (Thursday) — Coding Phase
 
 - Implement polling flow for GET transcription
