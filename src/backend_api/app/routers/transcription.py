@@ -55,17 +55,13 @@ async def get_transcription(video_id: str, db: db_dependency):
         transcription = fetch_video_and_transcription(db, video_id)
         if not transcription:
             raise HTTPException(status_code=404, detail="Video not found")
-        return TranscriptionResponse(
-            video_id=video_id,
-            title=transcription["title"],
-            url=transcription["url"],
-            status=transcription["transcription_status"],
-            language=transcription["language"],
-            transcription=transcription["transcribed_text"],
-        )
+        return TranscriptionResponse(**transcription)
+        
     except SQLAlchemyError as e:
         print(f"[ERROR] Database error: {e}")
         raise HTTPException(status_code=500, detail="Database error while fetching transcription")
+    except HTTPException as http_exc:
+        raise http_exc
     except Exception as e:
         print(f"[ERROR] Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="Unexpected error while fetching transcription")
