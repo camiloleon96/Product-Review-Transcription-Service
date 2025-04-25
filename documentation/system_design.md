@@ -1,5 +1,6 @@
 ## High-level design
 
+<div style="text-align: justify;">
 <img src="./diagrams/hld.png" alt="High-level Design" width="500"/>
 
 **Backend**: Exposes endpoints to initiate transcriptions and query results.
@@ -113,3 +114,5 @@ The database connections are already managed through dependency injection, which
 ## Worker
 
 The worker is a lightweight application running in a container. It serves mock data, which is static and remains the same across runs. Development time was minimal; the main focus was ensuring it correctly receives events from the broker and has proper access to the database.
+
+ </div>

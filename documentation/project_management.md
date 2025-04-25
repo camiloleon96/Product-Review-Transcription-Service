@@ -1,5 +1,6 @@
 # Project Management and Timeline
 
+<div style="text-align: justify;">
 The project began with a 2-hour ideation phase focused on brainstorming initial ideas, sketching out a rough system design based on first impressions, and progressively refining it. During this session, I also identified key priorities to better understand where to allocate more time and effort. This helped in narrowing the scope of the system in alignment with the requirements and led to the creation of the initial task list, including rough time estimates for each item.
 
 As a result of this initial phase, I created a clear set of tasks and main goals for the first 3 days of development, along with a future roadmap to guide ongoing progress and improvements.
@@ -93,3 +94,4 @@ The initial tasks served as a helpful guideline throughout development, but as I
 - Develop a frontend client for a better UI (e.g., React or Next.js)
 - Replace polling with WebSockets for real-time status updates
 - Use Kubernetes for scalable deployment, or consider moving to a cloud service
+  </div>
