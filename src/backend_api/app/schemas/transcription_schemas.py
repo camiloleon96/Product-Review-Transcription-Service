@@ -21,6 +21,6 @@ class TranscriptionResponse(BaseModel):
     video_id: str
     title: str
     url: HttpUrl
-    status: str
-    language: str
-    transcription: str
+    language: str | None = None
+    transcription_status: str
+    transcription: str | None = None
