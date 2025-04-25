@@ -70,6 +70,22 @@ def insert_video_product(session, video_id: str, product_id: str):
     session.commit()
 
 def insert_transcription(session, video_id: str):
+    avocado_peeler_review = """
+        [Intro music fades]
+        Reviewer:
+        "Hey everyone! Today I’m testing out this 3-in-1 avocado peeler. Let’s see if it’s worth the hype."
+        [Cuts avocado]
+        Reviewer:
+        "Okay, the slicer part? Super smooth. It glides right through. No mess, no fuss."
+        [Scooping and slicing]
+        Reviewer:
+        "The pitter works too—just press and twist, and boom, pit's out! And these slices? Look at that—perfect every time."
+        [Holds it up to the camera]
+        Reviewer:
+        "If you eat avocados weekly like I do, this thing’s a game-changer. Highly recommend."
+        [Outro music]
+        """
+
     insert_transcription_sql = text("""
         INSERT INTO transcriptions (id, video_id, transcribed_text)
         VALUES (:id, :video_id, :text)
@@ -77,7 +93,7 @@ def insert_transcription(session, video_id: str):
     session.execute(insert_transcription_sql, {
         "id": str(uuid.uuid4()),
         "video_id": video_id,
-        "text": "This is a mock transcription of the video content."
+        "text": avocado_peeler_review
     })
     session.commit()
 
@@ -100,7 +116,7 @@ def transcribe_video(video_id: str, youtube_url: str):
     try:
         update_video_metadata(session, video_id)
 
-        time.sleep(5)  # simulate processing
+        time.sleep(10)  # simulate processing
 
         insert_transcription(session, video_id)
 

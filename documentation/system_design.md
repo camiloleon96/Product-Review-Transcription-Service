@@ -78,6 +78,8 @@ The system provides a YouTube transcription service structured into three main p
 
 The system's database schema is centered around four main entities: videos, transcriptions, products, and the junction table video_products. The products table stores product information independently of videos. Although the initial system assumption was that each video would reference a single product, the database was intentionally designed to be more flexible and future-proof. Through the video_products junction table, it supports many-to-many relationships: a video can include multiple products, and the same product can appear in multiple videos. Additionally, each product-video association includes a score from 1 to 10.
 
+For this MVP, I didn't set up any volumes, as I was frequently making changes and found it helpful to start with a clean database each time. This only applies to the data rows—the table structure itself is defined and managed through the models.
+
 ## Backend Api: folder structure
 
 The FastAPI project is organized to promote clean separation of concerns and maintainability.
@@ -107,3 +109,7 @@ src/backend_api
 ```
 
 The database connections are already managed through dependency injection, which provides a solid foundation for modularity. The next step to improve flexibility is to introduce abstract classes or interfaces, making it easier to replace components like the database or data source in the future without doing significant changes in the codebase.
+
+## Worker
+
+The worker is a lightweight application running in a container. It serves mock data, which is static and remains the same across runs. Development time was minimal; the main focus was ensuring it correctly receives events from the broker and has proper access to the database.

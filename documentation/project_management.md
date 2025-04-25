@@ -32,6 +32,7 @@ As a result of this initial phase, I created a clear set of tasks and main goals
 
 ### Future Roadmap (Improvements)
 
+- Set uo volumes
 - Implement retry logic for failed tasks
 - Frontend client for better UI
 - Replace polling with WebSockets for real-time status
