@@ -1,7 +1,7 @@
 ## High-level design
 
 <div style="text-align: justify;">
-<img src="./diagrams/hld.png" alt="High-level Design" width="500"/>
+<img src="./diagrams/hld.png" alt="High-level Design" width="600"/>
 
 **Backend**: Exposes endpoints to initiate transcriptions and query results.
 
@@ -65,7 +65,7 @@ I chose a relational database for the MVP due to its focus on transcriptions. Po
 
 ## Flow diagram
 
-<img src="./diagrams/transcription_flow.png" alt="High-level Design" width="500"/>
+<img src="./diagrams/transcription_flow.png" alt="High-level Design" width="700"/>
 
 The system provides a YouTube transcription service structured into three main phases: Request, Processing, and Retrieval.
 
@@ -75,7 +75,7 @@ The system provides a YouTube transcription service structured into three main p
 
 ## Database schema
 
-<img src="./diagrams/database_schema.png" alt="High-level Design" width="500"/>
+<img src="./diagrams/database_schema.png" alt="High-level Design" width="600"/>
 
 The system's database schema is centered around four main entities: videos, transcriptions, products, and the junction table video_products. The products table stores product information independently of videos. Although the initial system assumption was that each video would reference a single product, the database was intentionally designed to be more flexible and future-proof. Through the video_products junction table, it supports many-to-many relationships: a video can include multiple products, and the same product can appear in multiple videos. Additionally, each product-video association includes a score from 1 to 10.
 

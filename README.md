@@ -75,7 +75,7 @@ If you want to further verify the flow of events and inspect the database conten
 
     Once you accessed the server, open the dev db and open the query tool following the image below:
 
-          <img src="documentation/images/pgAdmin.png" alt="High-level Design" width="500"/>
+    <img src="documentation/images/pgAdmin.png" alt="High-level Design" width="500"/>
 
     Here, you can monitor the videos and transcription data as they are updated by the worker.
     </div>
