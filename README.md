@@ -42,6 +42,11 @@ The real deliverables are:
 
    - Use the `GET` method on `api/video/transcription/{video_id}` and add the video_id to get the transcription with the metadata.
 
+     **NOTE**:
+
+     - For simulation purposes, the worker will take 20 seconds to prepare the transcription. You can expect the first response to have the metadata but: `transcription:Null` and `transcription_state:'pending'`
+     - If the `video_id` does not exist in the db you will get a **404**
+
 ## Optional
 
 If you want to further verify the flow of events and inspect the database content, you can use the following services running within the Docker Compose cluster.

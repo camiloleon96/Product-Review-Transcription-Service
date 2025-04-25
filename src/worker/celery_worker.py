@@ -116,7 +116,7 @@ def transcribe_video(video_id: str, youtube_url: str):
     try:
         update_video_metadata(session, video_id)
 
-        time.sleep(10)  # simulate processing
+        time.sleep(20)  # simulate processing
 
         insert_transcription(session, video_id)
 
